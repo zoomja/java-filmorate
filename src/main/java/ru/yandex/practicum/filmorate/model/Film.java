@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Data;
-import java.time.Duration;
 import java.time.LocalDate;
 
 @Data
