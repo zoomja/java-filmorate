@@ -21,17 +21,17 @@ public class UserController {
             throw new ValidationException("id отсутствует");
         }
 
-        if (users.containsKey(user.getId())) {
-            User updatedUser = users.get(user.getId());
-            updatedUser.setName(user.getName());
-            updatedUser.setLogin(user.getLogin());
-            updatedUser.setEmail(user.getEmail());
-            updatedUser.setBirthday(user.getBirthday());
-            log.info("Пользователь {} был обновлён", updatedUser.getId());
-            return updatedUser;
+        if (!users.containsKey(user.getId())) {
+            throw new NotFoundException("Пользователь с id = " + user.getId() + " не найден");
         }
 
-        throw new NotFoundException("Пользователь с id = " + user.getId() + " не найден");
+        User updatedUser = users.get(user.getId());
+        updatedUser.setName(user.getName());
+        updatedUser.setLogin(user.getLogin());
+        updatedUser.setEmail(user.getEmail());
+        updatedUser.setBirthday(user.getBirthday());
+        log.info("Пользователь {} был обновлён", updatedUser.getId());
+        return updatedUser;
     }
 
     @PostMapping

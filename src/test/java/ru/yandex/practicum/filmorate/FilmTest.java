@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FilmTest {
     private Validator validator;
+    private static final LocalDate VALID_RELEASE_DATE = LocalDate.of(1995, 7, 15);
 
     @BeforeEach
     public void setUp() {
@@ -43,12 +44,26 @@ public class FilmTest {
                 .id(1)
                 .name("")
                 .description("Описание")
-                .releaseDate(LocalDate.of(1995, 7, 15))
+                .releaseDate(VALID_RELEASE_DATE)
                 .duration(120)
                 .build();
 
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         assertFalse(violations.isEmpty(), "Название не должно быть пустым");
+    }
+
+    @Test
+    public void testFilmWithInvalidDescription() {
+        Film film = Film.builder()
+                .id(1)
+                .name("Название")
+                .description("")
+                .releaseDate(VALID_RELEASE_DATE)
+                .duration(120)
+                .build();
+
+        Set<ConstraintViolation<Film>> violations = validator.validate(film);
+        assertFalse(violations.isEmpty(), "Описание не должно быть пустым");
     }
 
     @Test
@@ -71,7 +86,7 @@ public class FilmTest {
                 .id(1)
                 .name("Название")
                 .description("Описание")
-                .releaseDate(LocalDate.of(1995, 7, 15))
+                .releaseDate(VALID_RELEASE_DATE)
                 .duration(120)
                 .build();
 
@@ -85,7 +100,7 @@ public class FilmTest {
                 .id(1)
                 .name("Описание")
                 .description("o".repeat(200))
-                .releaseDate(LocalDate.of(1995, 7, 15))
+                .releaseDate(VALID_RELEASE_DATE)
                 .duration(120)
                 .build();
 
@@ -103,7 +118,7 @@ public class FilmTest {
                 .id(1)
                 .name("Название")
                 .description("valid description")
-                .releaseDate(LocalDate.of(1995, 7, 15))
+                .releaseDate(VALID_RELEASE_DATE)
                 .duration(-50)
                 .build();
 

@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UserTest {
     private Validator validator;
+    private static final LocalDate VALID_RELEASE_DATE = LocalDate.of(2000, 1, 1);
 
     @BeforeEach
     public void setUp() {
@@ -30,7 +31,7 @@ public class UserTest {
                 .email("example@gmail.com")
                 .login("Login")
                 .name("name")
-                .birthday(LocalDate.of(2000, 1, 1))
+                .birthday(VALID_RELEASE_DATE)
                 .build();
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);
@@ -44,7 +45,7 @@ public class UserTest {
                 .email("")
                 .login("Login")
                 .name("name")
-                .birthday(LocalDate.of(2000, 1, 1))
+                .birthday(VALID_RELEASE_DATE)
                 .build();
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);
@@ -58,7 +59,7 @@ public class UserTest {
                 .email("examplegmail.com")
                 .login("Login")
                 .name("name")
-                .birthday(LocalDate.of(2000, 1, 1))
+                .birthday(VALID_RELEASE_DATE)
                 .build();
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);
@@ -72,7 +73,7 @@ public class UserTest {
                 .email("")
                 .login("")
                 .name("name")
-                .birthday(LocalDate.of(2000, 1, 1))
+                .birthday(VALID_RELEASE_DATE)
                 .build();
 
         Set<ConstraintViolation<User>> violations = validator.validate(user);

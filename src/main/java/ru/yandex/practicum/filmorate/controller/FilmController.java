@@ -28,29 +28,24 @@ public class FilmController {
         return film;
     }
 
-    private void validateFilm(Film film) {
-        if (!film.getReleaseDate().isAfter(LocalDate.of(1895, 12, 28)))
-            throw new ValidationException("Дата выхода фильма должна быть после 1985 года.");
-    }
-
     @PutMapping
     public Film putFilm(@Valid @RequestBody Film newFilm) {
         if (newFilm.getId() == 0) {
-            throw new ValidationException("Фильм с таким id не найдён");
+            throw new ValidationException("ID фильма отсутствует");
         }
 
-        if (films.containsKey(newFilm.getId())) {
-            validateFilm(newFilm);
-            Film updatedFilm = films.get(newFilm.getId());
-            updatedFilm.setName(newFilm.getName());
-            updatedFilm.setDescription(newFilm.getDescription());
-            updatedFilm.setReleaseDate(newFilm.getReleaseDate());
-            updatedFilm.setDuration(newFilm.getDuration());
-            log.info("Фильм с id {} обновлён", newFilm.getId());
-            return updatedFilm;
+        if (!films.containsKey(newFilm.getId())) {
+            throw new NotFoundException("Фильм с id = " + newFilm.getId() + " не найден");
         }
 
-        throw new NotFoundException("Фильм с id = " + newFilm.getId() + " не найден");
+        validateFilm(newFilm);
+        Film updatedFilm = films.get(newFilm.getId());
+        updatedFilm.setName(newFilm.getName());
+        updatedFilm.setDescription(newFilm.getDescription());
+        updatedFilm.setReleaseDate(newFilm.getReleaseDate());
+        updatedFilm.setDuration(newFilm.getDuration());
+        log.info("Фильм с id {} обновлён", newFilm.getId());
+        return updatedFilm;
     }
 
     @GetMapping
@@ -66,5 +61,10 @@ public class FilmController {
                 .max()
                 .orElse(0);
         return ++currentMaxId;
+    }
+
+    private void validateFilm(Film film) {
+        if (!film.getReleaseDate().isAfter(LocalDate.of(1895, 12, 28)))
+            throw new ValidationException("Дата выхода фильма должна быть после 1985 года.");
     }
 }
