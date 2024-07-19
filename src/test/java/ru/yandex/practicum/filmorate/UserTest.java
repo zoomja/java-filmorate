@@ -27,7 +27,7 @@ public class UserTest {
     @Test
     public void testUserWithAllValidField() {
         User user = User.builder()
-                .id(1)
+                .id(1L)
                 .email("example@gmail.com")
                 .login("Login")
                 .name("name")
@@ -41,7 +41,7 @@ public class UserTest {
     @Test
     public void testUserWithEmptyEmail() {
         User user = User.builder()
-                .id(1)
+                .id(1L)
                 .email("")
                 .login("Login")
                 .name("name")
@@ -55,7 +55,7 @@ public class UserTest {
     @Test
     public void testUserWithInvalidEmail() {
         User user = User.builder()
-                .id(1)
+                .id(1L)
                 .email("examplegmail.com")
                 .login("Login")
                 .name("name")
@@ -69,7 +69,7 @@ public class UserTest {
     @Test
     public void testUserWithEmptyLogin() {
         User user = User.builder()
-                .id(1)
+                .id(1L)
                 .email("")
                 .login("")
                 .name("name")
@@ -83,7 +83,7 @@ public class UserTest {
     @Test
     public void testUserHaveFutureBirthday() {
         User user = User.builder()
-                .id(1)
+                .id(1L)
                 .email("")
                 .login("Login")
                 .name("name")

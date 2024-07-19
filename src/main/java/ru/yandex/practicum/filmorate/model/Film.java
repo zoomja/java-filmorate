@@ -4,13 +4,18 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
+
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Builder
+@ToString
 public class Film {
 
-    private int id;
+    private Long id;
 
     @NotBlank(message = "Название не может быть пустым.")
     private String name;
@@ -24,6 +29,9 @@ public class Film {
     private LocalDate releaseDate;
 
     @Positive(message = "Продолжительность фильма должна быть положительным числом.")
-    private int duration;
+    private Integer duration;
+
+    Set<Long> likes;
+
 
 }

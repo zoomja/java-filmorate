@@ -9,12 +9,15 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 @Builder
 public class User {
 
-    private int id;
+    private Long id;
+
+    private String name;
 
     @Email(message = "Электронная почта не может быть пустой и должна содержать символ @")
     @NotBlank(message = "Электронная почта не может быть пустой и должна содержать символ @")
@@ -24,15 +27,9 @@ public class User {
     @Pattern(regexp = "\\S+", message = "Логин не должен содержать пробелы")
     private String login;
 
-
-    private String name;
-
     @PastOrPresent(message = "Дата рождения не может быть в будущем.")
     @JsonFormat(pattern = ("yyyy-MM-dd"))
     private LocalDate birthday;
 
-    public void setName(String name) {
-        if (name == null || name.isEmpty()) this.name = login;
-        else this.name = name;
-    }
+    Set<Long> friends;
 }
