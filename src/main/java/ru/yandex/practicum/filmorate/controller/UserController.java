@@ -51,31 +51,4 @@ public final class UserController {
     public List<User> listCommonFriends(@PathVariable long id, @PathVariable long secondId) {
         return userService.listCommonFriends(id, secondId);
     }
-
-
-//    private final UserStorage userStorage;
-//
-//    public UserController(UserStorage userStorage) {
-//        this.userStorage = userStorage;
-//    }
-//
-//    @PostMapping
-//    public User addUser(@Valid @RequestBody User user) {
-//        User addedUser = userStorage.addUser(user);
-//        log.info("Добавлен пользователь с id= {}", addedUser.getId());
-//        return addedUser;
-//    }
-//
-//    @PutMapping
-//    public User updateUser(@Valid @RequestBody User user) {
-//        User updatedUser = userStorage.putUser(user);
-//        log.info("Пользователь с id {} обновлён", updatedUser.getId());
-//        return updatedUser;
-//    }
-//
-//    @GetMapping
-//    public Collection<User> getAllUsers() {
-//        log.info("Получение списка всех пользователей");
-//        return userStorage.getAllUsers();
-//    }
 }

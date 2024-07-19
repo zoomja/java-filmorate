@@ -46,35 +46,7 @@ public class FilmController {
     }
 
     @GetMapping("/popular")
-    public Collection<Film> getPopular(@RequestParam int count){
+    public Collection<Film> getPopular(@RequestParam int count) {
         return filmService.getPopular(count);
     }
-
-
-//    private final FilmStorage filmStorage;
-//
-//    public FilmController(FilmStorage filmStorage) {
-//        this.filmStorage = filmStorage;
-//    }
-//
-//    @PostMapping
-//    public Film addFilm(@Valid @RequestBody Film film) {
-//        Film addedFilm = filmStorage.addFilm(film);
-//        log.info("Фильм из storage", filmStorage.getAllFilms().size());
-//        return addedFilm;
-//    }
-//
-//    @PutMapping
-//    public Film putFilm(@Valid @RequestBody Film newFilm) {
-//        Film updatedFilm = filmStorage.putFilm(newFilm);
-//        log.info("Фильм с id {} обновлён", updatedFilm.getId());
-//        return updatedFilm;
-//    }
-//
-//    @GetMapping
-//    public Collection<Film> getAllFilms() {
-//        log.info("Получение списка всех фильмов");
-//        return filmStorage.getAllFilms();
-//    }
-
 }
