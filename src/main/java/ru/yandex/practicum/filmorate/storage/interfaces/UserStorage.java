@@ -8,7 +8,7 @@ public interface UserStorage {
 
     User addUser(User user);
 
-    User putUser(User user);
+    User updateUser(User user);
 
     Collection<User> getAllUsers();
 

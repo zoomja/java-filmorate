@@ -6,10 +6,10 @@ import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,8 +26,8 @@ public class UserService {
         User friend = inMemoryUserStorage.findById(friendID);
         friend.getFriends().add(id);
 
-        inMemoryUserStorage.putUser(user);
-        inMemoryUserStorage.putUser(friend);
+        inMemoryUserStorage.updateUser(user);
+        inMemoryUserStorage.updateUser(friend);
 
         return friend;
     }
@@ -43,8 +43,8 @@ public class UserService {
         User friend = inMemoryUserStorage.findById(friendID);
         friend.getFriends().remove(id);
 
-        inMemoryUserStorage.putUser(user);
-        inMemoryUserStorage.putUser(friend);
+        inMemoryUserStorage.updateUser(user);
+        inMemoryUserStorage.updateUser(friend);
 
         return user.getFriends();
     }
@@ -55,26 +55,18 @@ public class UserService {
 
         User user = inMemoryUserStorage.findById(id);
         User secondUser = inMemoryUserStorage.findById(secondId);
-        List<User> listCommonFriends = new ArrayList<>();
-        for (Long firstId : user.getFriends()) {
-            if (secondUser.getFriends().contains(firstId)) {
-                listCommonFriends.add(inMemoryUserStorage.findById(firstId));
-            }
-        }
-        return listCommonFriends;
+        return user.getFriends().stream()
+                .filter(friendId -> secondUser.getFriends().contains(friendId))
+                .map(inMemoryUserStorage::findById)
+                .collect(Collectors.toList());
     }
 
     public List<User> listFriends(long id) {
         checkUserExists(id);
         User user = inMemoryUserStorage.findById(id);
-        List<User> listFriends = new ArrayList<>();
-        if (user.getFriends() == null) {
-            return listFriends;
-        }
-        for (Long firstId : user.getFriends()) {
-            listFriends.add(inMemoryUserStorage.findById(firstId));
-        }
-        return listFriends;
+        return user.getFriends().stream()
+                .map(inMemoryUserStorage::findById)
+                .collect(Collectors.toList());
     }
 
     public Collection<User> getAllUsers() {
@@ -90,7 +82,7 @@ public class UserService {
     }
 
     public User putUser(User user) {
-        return inMemoryUserStorage.putUser(user);
+        return inMemoryUserStorage.updateUser(user);
     }
 
     private void checkUserExists(long id) {

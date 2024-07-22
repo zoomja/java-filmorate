@@ -29,7 +29,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User putUser(User user) {
+    public User updateUser(User user) {
         if (user.getId() == null) {
             log.error("Нет id");
             throw new ValidationException("Id должен быть указан");

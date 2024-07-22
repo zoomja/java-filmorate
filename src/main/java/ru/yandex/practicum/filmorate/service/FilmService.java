@@ -18,13 +18,14 @@ import java.util.stream.Collectors;
 public class FilmService {
     private final InMemoryFilmStorage inMemoryFilmStorage;
     private final InMemoryUserStorage inMemoryUserStorage;
+    private static final int COUNT = 10;
 
     public Film addLike(long filmId, long userId) {
         checkFilmExists(filmId);
         checkUserExists(userId);
         Film film = inMemoryFilmStorage.findById(filmId);
         film.getLikes().add(userId);
-        inMemoryFilmStorage.putFilm(film);
+        inMemoryFilmStorage.updateFilm(film);
         return film;
     }
 
@@ -36,14 +37,14 @@ public class FilmService {
             throw new NotFoundException("Пользователь " + userId + " не ставил лайк фильму " + filmId);
         }
         film.getLikes().remove(userId);
-        inMemoryFilmStorage.putFilm(film);
+        inMemoryFilmStorage.updateFilm(film);
         return film.getLikes();
     }
 
     public List<Film> getPopular(int count) {
         return inMemoryFilmStorage.getAllFilms().stream()
                 .sorted(Comparator.comparingInt(film -> -film.getLikes().size()))
-                .limit(count > 0 ? count : 10)
+                .limit(count > 0 ? count : COUNT)
                 .collect(Collectors.toList());
     }
 
@@ -56,7 +57,7 @@ public class FilmService {
     }
 
     public Film putFilm(Film film) {
-        return inMemoryFilmStorage.putFilm(film);
+        return inMemoryFilmStorage.updateFilm(film);
     }
 
     public Film addFilm(Film film) {
