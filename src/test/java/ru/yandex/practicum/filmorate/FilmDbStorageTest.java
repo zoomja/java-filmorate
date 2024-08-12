@@ -16,9 +16,9 @@ import java.util.Collection;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional
 @Rollback
+@AutoConfigureTestDatabase
 public class FilmDbStorageTest {
 
     @Autowired
