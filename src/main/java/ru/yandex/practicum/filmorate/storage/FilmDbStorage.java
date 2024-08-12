@@ -24,7 +24,7 @@ public class FilmDbStorage implements FilmStorage {
     private static final String SELECT_ALL_FILMS = "SELECT * FROM films";
     private static final String DELETE_FILM = "DELETE FROM films WHERE ID = ?";
     private static final String UPDATE_FILM = "UPDATE films SET name=?, description=?, duration=?, releasedate=?,mpa_id=? WHERE id=?";
-    private final static String SELECT_FILM_BY_ID = "SELECT * FROM films WHERE id=?";
+    private static final String SELECT_FILM_BY_ID = "SELECT * FROM films WHERE id=?";
 
     private final JdbcTemplate jdbc;
     private final FilmRowMapper mapper;
