@@ -27,7 +27,7 @@ public class FilmTest {
     @Test
     public void testFilmWithNullReleaseDate() {
         Film film = Film.builder()
-                .id(1L)
+                .id(1)
                 .name("Название")
                 .description("Описание")
                 .releaseDate(null)
@@ -41,7 +41,7 @@ public class FilmTest {
     @Test
     public void testFilmWithInvalidName() {
         Film film = Film.builder()
-                .id(1L)
+                .id(1)
                 .name("")
                 .description("Описание")
                 .releaseDate(VALID_RELEASE_DATE)
@@ -55,7 +55,7 @@ public class FilmTest {
     @Test
     public void testFilmWithInvalidDescription() {
         Film film = Film.builder()
-                .id(1L)
+                .id(1)
                 .name("Название")
                 .description("")
                 .releaseDate(VALID_RELEASE_DATE)
@@ -69,7 +69,7 @@ public class FilmTest {
     @Test
     public void testFilmReleaseDateInFuture() {
         Film film = Film.builder()
-                .id(1L)
+                .id(1)
                 .name("Название")
                 .description("Описание")
                 .releaseDate(LocalDate.now().plusDays(1))
@@ -83,7 +83,7 @@ public class FilmTest {
     @Test
     public void testFilmWithValidFields() {
         Film film = Film.builder()
-                .id(1L)
+                .id(1)
                 .name("Название")
                 .description("Описание")
                 .releaseDate(VALID_RELEASE_DATE)
@@ -97,7 +97,7 @@ public class FilmTest {
     @Test
     public void testFilmWithMaxDescriptionLength() {
         Film film = Film.builder()
-                .id(1L)
+                .id(1)
                 .name("Описание")
                 .description("o".repeat(200))
                 .releaseDate(VALID_RELEASE_DATE)
@@ -115,7 +115,7 @@ public class FilmTest {
     @Test
     public void testFilmWithNegativeDuration() {
         Film film = Film.builder()
-                .id(1L)
+                .id(1)
                 .name("Название")
                 .description("valid description")
                 .releaseDate(VALID_RELEASE_DATE)

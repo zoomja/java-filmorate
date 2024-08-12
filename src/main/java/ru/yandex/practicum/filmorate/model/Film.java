@@ -2,19 +2,22 @@ package ru.yandex.practicum.filmorate.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.ToString;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Data
 @Builder
-@ToString
+@AllArgsConstructor  // Добавьте эту аннотацию
+@NoArgsConstructor
 public class Film {
 
-    private Long id;
+    private int id;
 
     @NotBlank(message = "Название не может быть пустым.")
     private String name;
@@ -31,4 +34,7 @@ public class Film {
     private Integer duration;
 
     Set<Long> likes;
+
+    private Mpa mpa;
+    private List<Genre> genres;
 }
