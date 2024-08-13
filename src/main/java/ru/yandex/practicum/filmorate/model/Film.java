@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.yandex.practicum.filmorate.validation.ValidFilm;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,8 +14,9 @@ import java.util.Set;
 
 @Data
 @Builder
-@AllArgsConstructor  // Добавьте эту аннотацию
+@AllArgsConstructor
 @NoArgsConstructor
+@ValidFilm
 public class Film {
 
     private int id;

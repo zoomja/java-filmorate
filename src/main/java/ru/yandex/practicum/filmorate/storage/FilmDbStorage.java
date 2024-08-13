@@ -6,6 +6,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import org.springframework.validation.annotation.Validated;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.mapper.FilmRowMapper;
@@ -13,12 +14,12 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.storage.interfaces.FilmStorage;
 
-import java.time.LocalDate;
 import java.util.*;
 
 @Repository
 @RequiredArgsConstructor
 @Slf4j
+@Validated
 public class FilmDbStorage implements FilmStorage {
 
     private static final String SELECT_ALL_FILMS = "SELECT * FROM films";
@@ -80,10 +81,6 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     private void validateFilm(Film film) {
-        if (film.getGenres() == null)
-            film.setGenres(new ArrayList<>());
-        if (!film.getReleaseDate().isAfter(LocalDate.of(1895, 12, 28)))
-            throw new ValidationException("Film release date must be after 1985");
         try {
             mpaDbStorage.getMpaById(film.getMpa().getId());
             film.getGenres().forEach(g -> genreDbStorage.getGenreById(g.getId()));
