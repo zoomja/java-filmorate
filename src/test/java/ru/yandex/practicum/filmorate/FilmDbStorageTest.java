@@ -11,6 +11,7 @@ import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.storage.FilmDbStorage;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,6 +32,7 @@ public class FilmDbStorageTest {
         film.setDescription("Description");
         film.setReleaseDate(LocalDate.of(2020, 1, 1));
         film.setDuration(120);
+        film.setGenres(new ArrayList<>());
         film.setMpa(new Mpa(1, "G"));
 
         Film savedFilm = filmDbStorage.addFilm(film);
@@ -45,6 +47,7 @@ public class FilmDbStorageTest {
         film.setDescription("Description");
         film.setReleaseDate(LocalDate.of(2020, 1, 1));
         film.setDuration(120);
+        film.setGenres(new ArrayList<>());
         film.setMpa(new Mpa(1, "G"));
         Film savedFilm = filmDbStorage.addFilm(film);
 
@@ -62,6 +65,7 @@ public class FilmDbStorageTest {
         film.setDescription("Description");
         film.setReleaseDate(LocalDate.of(2020, 1, 1));
         film.setDuration(120);
+        film.setGenres(new ArrayList<>());
         film.setMpa(new Mpa(1, "G"));
         Film savedFilm = filmDbStorage.addFilm(film);
 
@@ -77,6 +81,7 @@ public class FilmDbStorageTest {
         film1.setDescription("Description 1");
         film1.setReleaseDate(LocalDate.of(2020, 1, 1));
         film1.setDuration(120);
+        film1.setGenres(new ArrayList<>());
         film1.setMpa(new Mpa(1, "G"));
 
         Film film2 = new Film();
@@ -84,6 +89,7 @@ public class FilmDbStorageTest {
         film2.setDescription("Description 2");
         film2.setReleaseDate(LocalDate.of(2020, 2, 1));
         film2.setDuration(150);
+        film2.setGenres(new ArrayList<>());
         film2.setMpa(new Mpa(2, "PG"));
 
         filmDbStorage.addFilm(film1);

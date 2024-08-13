@@ -4,15 +4,16 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import jakarta.validation.ValidationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class FilmTest {
     private Validator validator;
@@ -32,10 +33,12 @@ public class FilmTest {
                 .description("Описание")
                 .releaseDate(null)
                 .duration(80)
+                .genres(new ArrayList<>())
                 .build();
 
-        Set<ConstraintViolation<Film>> violations = validator.validate(film);
-        assertFalse(violations.isEmpty(), "Дата релиза не может быть null");
+        assertThrows(ValidationException.class, () -> {
+            validator.validate(film);
+        });
     }
 
     @Test
@@ -46,6 +49,7 @@ public class FilmTest {
                 .description("Описание")
                 .releaseDate(VALID_RELEASE_DATE)
                 .duration(120)
+                .genres(new ArrayList<>())
                 .build();
 
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
@@ -60,6 +64,7 @@ public class FilmTest {
                 .description("")
                 .releaseDate(VALID_RELEASE_DATE)
                 .duration(120)
+                .genres(new ArrayList<>())
                 .build();
 
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
@@ -74,6 +79,7 @@ public class FilmTest {
                 .description("Описание")
                 .releaseDate(LocalDate.now().plusDays(1))
                 .duration(80)
+                .genres(new ArrayList<>())
                 .build();
 
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
@@ -88,6 +94,7 @@ public class FilmTest {
                 .description("Описание")
                 .releaseDate(VALID_RELEASE_DATE)
                 .duration(120)
+                .genres(new ArrayList<>())
                 .build();
 
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
@@ -102,6 +109,7 @@ public class FilmTest {
                 .description("o".repeat(200))
                 .releaseDate(VALID_RELEASE_DATE)
                 .duration(120)
+                .genres(new ArrayList<>())
                 .build();
 
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
@@ -120,6 +128,7 @@ public class FilmTest {
                 .description("valid description")
                 .releaseDate(VALID_RELEASE_DATE)
                 .duration(-50)
+                .genres(new ArrayList<>())
                 .build();
 
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
