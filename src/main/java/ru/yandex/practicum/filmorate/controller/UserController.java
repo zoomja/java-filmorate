@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -19,36 +20,49 @@ public final class UserController {
 
     @GetMapping
     public Collection<User> getAllUsers() {
+        log.info("Получение всех пользователей");
         return userService.getAllUsers();
     }
 
     @PostMapping
     public User addUser(@Valid @RequestBody User user) {
+        log.info("Добавление пользователя: {}", user);
         return userService.addUser(user);
     }
 
     @PutMapping
-    public User putUser(@Valid @RequestBody User user) {
-        return userService.putUser(user);
+    public User updateUser(@Valid @RequestBody User user) {
+        log.info("Обновление пользователя: {}", user);
+        return userService.updateUser(user);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable int id) {
+        log.info("Удаление пользователя: {}", id);
+        userService.delete(id);
     }
 
     @PutMapping("/{id}/friends/{friendId}")
     public User addFriends(@PathVariable int id, @PathVariable int friendId) {
+        log.info("Добавление друга: {}", friendId);
         return userService.addFriends(id, friendId);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
-    public Set<Long> deleteFriends(@PathVariable int id, @PathVariable int friendId) {
-        return userService.deleteFriends(id, friendId);
+    public void deleteFriends(@PathVariable int id, @PathVariable int friendId) {
+        log.info("Удаление друга: {}", friendId);
+        userService.deleteFriends(id, friendId);
     }
 
     @GetMapping("/{id}/friends")
     public List<User> getListFriends(@PathVariable int id) {
+        log.info("Получение списка друзей: {}", id);
         return userService.listFriends(id);
     }
 
     @GetMapping("/{id}/friends/common/{secondId}")
-    public List<User> listCommonFriends(@PathVariable long id, @PathVariable long secondId) {
+    public List<User> listCommonFriends(@PathVariable int id, @PathVariable int secondId) {
+        log.info("Получение списка общих друзей: {}", id);
         return userService.listCommonFriends(id, secondId);
     }
 }

@@ -2,9 +2,9 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.UserDbStorage;
 
 import java.util.Collection;
 import java.util.List;
@@ -14,80 +14,52 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final InMemoryUserStorage inMemoryUserStorage;
+    private final UserDbStorage userDbStorage;
 
-    public User addFriends(long id, long friendID) {
-        checkUserExists(id);
-        checkUserExists(friendID);
-
-        User user = inMemoryUserStorage.findById(id);
-        user.getFriends().add(friendID);
-
-        User friend = inMemoryUserStorage.findById(friendID);
-        friend.getFriends().add(id);
-
-        inMemoryUserStorage.updateUser(user);
-        inMemoryUserStorage.updateUser(friend);
-
-        return friend;
+    public User addFriends(int id, int friendID) {
+        if (id == friendID)
+            throw new ValidationException("Невозможно добавить себя в друзья");
+        userDbStorage.addFriends(id, friendID);
+        return userDbStorage.getUserById(id);
     }
 
-    public Set<Long> deleteFriends(long id, long friendID) {
-        checkUserExists(id);
-        checkUserExists(friendID);
-        User user = inMemoryUserStorage.findById(id);
-        if (!user.getFriends().contains(friendID)) {
-            return user.getFriends();
-        }
-        user.getFriends().remove(friendID);
-        User friend = inMemoryUserStorage.findById(friendID);
-        friend.getFriends().remove(id);
-
-        inMemoryUserStorage.updateUser(user);
-        inMemoryUserStorage.updateUser(friend);
-
-        return user.getFriends();
+    public void deleteFriends(int id, int friendID) {
+        userDbStorage.removeFriend(id, friendID);
     }
 
-    public List<User> listCommonFriends(long id, long secondId) {
-        checkUserExists(id);
-        checkUserExists(secondId);
+    public List<User> listCommonFriends(int id, int secondId) {
 
-        User user = inMemoryUserStorage.findById(id);
-        User secondUser = inMemoryUserStorage.findById(secondId);
-        return user.getFriends().stream()
-                .filter(friendId -> secondUser.getFriends().contains(friendId))
-                .map(inMemoryUserStorage::findById)
+
+        Set<Integer> userFriends = userDbStorage.getFriendsByUserId(id);
+        Set<Integer> secondUserFriends = userDbStorage.getFriendsByUserId(secondId);
+
+        return userFriends.stream()
+                .filter(secondUserFriends::contains)
+                .map(userDbStorage::getUserById)
                 .collect(Collectors.toList());
     }
 
-    public List<User> listFriends(long id) {
-        checkUserExists(id);
-        User user = inMemoryUserStorage.findById(id);
-        return user.getFriends().stream()
-                .map(inMemoryUserStorage::findById)
+    public List<User> listFriends(int id) {
+        userDbStorage.getUserById(id);
+        Set<Integer> friendIds = userDbStorage.getFriendsByUserId(id);
+        return friendIds.stream()
+                .map(userDbStorage::getUserById)
                 .collect(Collectors.toList());
     }
 
     public Collection<User> getAllUsers() {
-        return inMemoryUserStorage.getAllUsers();
+        return userDbStorage.getAllUsers();
     }
 
-    public void delete(long id) {
-        inMemoryUserStorage.delete(id);
+    public void delete(int id) {
+        userDbStorage.delete(id);
     }
 
     public User addUser(User user) {
-        return inMemoryUserStorage.addUser(user);
+        return userDbStorage.addUser(user);
     }
 
-    public User putUser(User user) {
-        return inMemoryUserStorage.updateUser(user);
-    }
-
-    private void checkUserExists(long id) {
-        if (inMemoryUserStorage.findById(id) == null) {
-            throw new NotFoundException("Пользователь с id: " + id + " не найден");
-        }
+    public User updateUser(User user) {
+        return userDbStorage.updateUser(user);
     }
 }
